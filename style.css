@@ -1,450 +1,118 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    background: #0f172a;
-    color: #f8fafc;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 90px; /* space for fixed footer */
+  background-color: #0d1527;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
 }
 
-#app {
-    width: 100%;
-    max-width: 1000px;
-    padding: 20px;
+.container {
+  text-align: center;
+  max-width: 900px;
+  width: 100%;
 }
 
-.screen {
-    display: none;
+h1 {
+  font-size: 2.2rem;
+  color: #00bfff;
+  margin-bottom: 8px;
 }
 
-.screen.active {
-    display: block;
+.subtitle {
+  color: #8a99ad;
+  margin-bottom: 30px;
 }
 
-/* 1. SETUP SCREEN */
-.main-header {
-    text-align: center;
-    margin-bottom: 30px;
+.teams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
 }
 
-.main-header h1 {
-    font-size: 2.2rem;
-    color: #38bdf8;
-    margin-bottom: 8px;
+.team-card {
+  background-color: #172238;
+  border: 1px solid #233352;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: left;
 }
 
-.teams-setup-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
+.team-card h3 {
+  margin-bottom: 12px;
+  font-size: 1.1rem;
 }
 
-.team-card-setup {
-    background: #1e293b;
-    border: 2px solid #334155;
-    border-radius: 12px;
-    padding: 20px;
+.team-name {
+  width: 100%;
+  padding: 10px 14px;
+  background-color: #0d1527;
+  border: 1px solid #2a3d66;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  margin-bottom: 15px;
 }
 
-.team-card-setup h3 {
-    margin-bottom: 12px;
-    color: #f1f5f9;
+.team-name:focus {
+  border-color: #00bfff;
 }
 
-.team-name-input {
-    width: 100%;
-    padding: 10px 14px;
-    border-radius: 8px;
-    border: 1px solid #475569;
-    background: #0f172a;
-    color: #fff;
-    font-size: 1rem;
-    margin-bottom: 15px;
+.label {
+  font-size: 0.85rem;
+  color: #8a99ad;
+  margin-bottom: 8px;
 }
 
-.icon-selector-title {
-    font-size: 0.9rem;
-    color: #94a3b8;
-    margin-bottom: 10px;
+.icon-selector {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.icon-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
+.icon-item {
+  font-size: 1.4rem;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #0d1527;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  user-select: none;
 }
 
-.icon-option {
-    font-size: 1.5rem;
-    padding: 6px;
-    text-align: center;
-    border-radius: 8px;
-    background: #0f172a;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: all 0.2s;
+.icon-item:hover {
+  background-color: #233352;
 }
 
-.icon-option:hover {
-    background: #334155;
+.icon-item.active {
+  border-color: #10b981;
+  background-color: #1a3835;
 }
 
-.icon-option.selected {
-    border-color: #38bdf8;
-    background: #0284c7;
+#start-btn {
+  width: 100%;
+  padding: 15px;
+  background-color: #10b981;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-.btn {
-    display: block;
-    width: 100%;
-    padding: 14px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.1s, background 0.2s;
-}
-
-.primary-btn {
-    background: #10b981;
-    color: white;
-}
-
-.primary-btn:hover {
-    background: #059669;
-}
-
-/* 2. BOARD SCREEN */
-.game-header {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.game-header h2 {
-    color: #38bdf8;
-    letter-spacing: 2px;
-}
-
-.turn-indicator {
-    margin-top: 5px;
-    font-size: 1.1rem;
-    color: #f59e0b;
-    font-weight: bold;
-}
-
-.cards-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 12px;
-}
-
-.tarot-card {
-    background: linear-gradient(135deg, #1e1b4b, #312e81);
-    border: 2px solid #f59e0b;
-    border-radius: 10px;
-    padding: 10px 5px;
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    user-select: none;
-    position: relative;
-}
-
-.tarot-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
-}
-
-.tarot-card.disabled {
-    opacity: 0.3;
-    filter: grayscale(1);
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-.tarot-card .card-icon {
-    font-size: 2rem;
-    display: block;
-    margin-bottom: 4px;
-}
-
-.tarot-card .card-num {
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: #fbbf24;
-}
-
-/* 3. QUESTION SCREEN */
-.question-container {
-    display: flex;
-    gap: 20px;
-}
-
-.question-main-box {
-    flex: 1;
-    background: #1e293b;
-    border: 2px solid #334155;
-    border-radius: 12px;
-    padding: 25px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 380px;
-}
-
-.points-badge {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: #f59e0b;
-    color: #0f172a;
-    font-weight: bold;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 1.1rem;
-}
-
-.question-text {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #38bdf8;
-    margin-top: 40px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-#help-display-area {
-    margin: 15px 0;
-}
-
-/* Variants */
-.variants-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-.variant-item {
-    background: #0f172a;
-    border: 2px solid #38bdf8;
-    padding: 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.2s;
-}
-
-.variant-item:hover {
-    background: #0284c7;
-}
-
-.variant-item.selected {
-    background: #f59e0b;
-    color: #000;
-}
-
-/* Letter Boxes */
-.letters-container {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin: 15px 0;
-}
-
-.letter-tile {
-    width: 45px;
-    height: 50px;
-    border: 2px solid #38bdf8;
-    background: #0f172a;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    font-weight: bold;
-    cursor: pointer;
-    color: #f59e0b;
-}
-
-.letter-tile.revealed {
-    background: #1e3a8a;
-    border-color: #60a5fa;
-}
-
-/* 20/80 Split UI */
-.team-split-container {
-    background: #0f172a;
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px dashed #f59e0b;
-}
-
-.team-split-container p {
-    font-size: 0.95rem;
-    color: #cbd5e1;
-    margin-bottom: 10px;
-}
-
-.team-choice-btns {
-    display: flex;
-    gap: 10px;
-}
-
-.split-choice-btn {
-    flex: 1;
-    padding: 10px;
-    background: #334155;
-    border: 2px solid transparent;
-    color: #fff;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.split-choice-btn.selected {
-    border-color: #10b981;
-    background: #065f46;
-}
-
-.answer-input-container input {
-    width: 100%;
-    padding: 14px;
-    border-radius: 8px;
-    border: 2px solid #475569;
-    background: #0f172a;
-    color: #fff;
-    font-size: 1.1rem;
-}
-
-/* Sidebar Help Buttons */
-.help-sidebar {
-    width: 220px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.sidebar-title {
-    font-weight: bold;
-    color: #94a3b8;
-    text-align: center;
-    margin-bottom: 5px;
-}
-
-.help-btn {
-    background: #334155;
-    color: #fff;
-    border: 2px solid #475569;
-    padding: 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    text-align: left;
-    font-weight: bold;
-    transition: all 0.2s;
-}
-
-.help-btn:hover {
-    background: #475569;
-    border-color: #38bdf8;
-}
-
-.help-btn .help-desc {
-    display: block;
-    font-size: 0.75rem;
-    color: #94a3b8;
-    font-weight: normal;
-}
-
-.check-btn {
-    background: #0284c7;
-    color: white;
-    border: none;
-    padding: 14px;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 1.1rem;
-    cursor: pointer;
-    margin-top: auto;
-}
-
-.check-btn:hover {
-    background: #0369a1;
-}
-
-.back-btn {
-    background: transparent;
-    color: #94a3b8;
-    border: 1px solid #475569;
-    padding: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.back-btn:hover {
-    color: #fff;
-    border-color: #cbd5e1;
-}
-
-/* PERSISTENT SCOREBOARD FOOTER */
-#persistent-scoreboard {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 75px;
-    background: #1e293b;
-    border-top: 3px solid #334155;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-    box-shadow: 0 -5px 25px rgba(0,0,0,0.5);
-}
-
-.team-score-card {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: #0f172a;
-    padding: 8px 20px;
-    border-radius: 10px;
-    border: 2px solid #334155;
-    min-width: 160px;
-}
-
-.team-score-card.active-turn {
-    border-color: #f59e0b;
-    box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
-}
-
-.team-score-icon {
-    font-size: 1.8rem;
-}
-
-.team-score-name {
-    font-weight: bold;
-    color: #f8fafc;
-    font-size: 1rem;
-}
-
-.team-score-pts {
-    color: #10b981;
-    font-weight: bold;
-    font-size: 0.95rem;
-}
-
-.hidden {
-    display: none !important;
+#start-btn:hover {
+  background-color: #059669;
 }
