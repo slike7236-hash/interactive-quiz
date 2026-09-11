@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interaktiv Jamoviy O'yin</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 1. SETUP SCREEN -->
+        <div id="setup-screen" class="screen active">
+            <header class="main-header">
+                <h1>Jamoaviy Activity O'yini</h1>
+                <p>Jamoalarni sozlang va o'yinni boshlang</p>
+            </header>
+
+            <div class="teams-setup-container">
+                <div class="team-card-setup" data-team="0">
+                    <h3>1-Jamoa</h3>
+                    <input type="text" class="team-name-input" value="Leon" placeholder="Jamoa nomi...">
+                    <div class="icon-selector-title">Ikonka tanlang:</div>
+                    <div class="icon-grid" id="icons-team-0"></div>
+                </div>
+
+                <div class="team-card-setup" data-team="1">
+                    <h3>2-Jamoa</h3>
+                    <input type="text" class="team-name-input" value="Fox" placeholder="Jamoa nomi...">
+                    <div class="icon-selector-title">Ikonka tanlang:</div>
+                    <div class="icon-grid" id="icons-team-1"></div>
+                </div>
+
+                <div class="team-card-setup" data-team="2">
+                    <h3>3-Jamoa</h3>
+                    <input type="text" class="team-name-input" value="Eagle" placeholder="Jamoa nomi...">
+                    <div class="icon-selector-title">Ikonka tanlang:</div>
+                    <div class="icon-grid" id="icons-team-2"></div>
+                </div>
+            </div>
+
+            <button id="start-game-btn" class="btn primary-btn">O'yinni Boshlash 🚀</button>
+        </div>
+
+        <!-- 2. GAME BOARD SCREEN (CARDS) -->
+        <div id="board-screen" class="screen">
+            <header class="game-header">
+                <h2>SAVOL TANLANG</h2>
+                <div class="turn-indicator">Hozirgi navbat: <span id="current-turn-name">Leon</span></div>
+            </header>
+
+            <div class="cards-grid" id="cards-grid">
+                <!-- 21 Cards generated dynamically -->
+            </div>
+        </div>
+
+        <!-- 3. QUESTION SCREEN -->
+        <div id="question-screen" class="screen">
+            <div class="question-container">
+                <div class="question-main-box">
+                    <div class="points-badge" id="question-points">10 pts</div>
+                    <div class="question-content" id="question-text">
+                        Savol yuklanmoqda...
+                    </div>
+
+                    <!-- Dynamic Help Content (Variants / Letter Boxes / 20/80) -->
+                    <div id="help-display-area">
+                        <div id="variants-box" class="hidden"></div>
+                        <div id="letters-box" class="hidden"></div>
+                        <div id="team-split-box" class="hidden"></div>
+                    </div>
+
+                    <div class="answer-input-container">
+                        <input type="text" id="type-answer-input" placeholder="Javobni kiriting (Type answer)">
+                    </div>
+                </div>
+
+                <div class="help-sidebar">
+                    <div class="sidebar-title">HELP (YORDAM)</div>
+                    <button class="help-btn" id="btn-help-variant">
+                        Variant <span class="help-desc">(25% ball)</span>
+                    </button>
+                    <button class="help-btn" id="btn-help-letter">
+                        Letter <span class="help-desc">(-20% / -40% / -60%)</span>
+                    </button>
+                    <button class="help-btn" id="btn-help-2080">
+                        20/80 <span class="help-desc">(Bo'lishish)</span>
+                    </button>
+                    <button class="check-btn" id="btn-check-answer">
+                        Check (Tekshirish)
+                    </button>
+                    <button class="back-btn" id="btn-back-to-board">
+                        ← Ortga
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PERSISTENT BOTTOM SCOREBOARD -->
+        <div id="persistent-scoreboard" class="hidden">
+            <div class="team-score-card" id="score-card-0">
+                <span class="team-score-icon">🦁</span>
+                <div class="team-score-info">
+                    <div class="team-score-name">Leon</div>
+                    <div class="team-score-pts">0 pts</div>
+                </div>
+            </div>
+            <div class="team-score-card" id="score-card-1">
+                <span class="team-score-icon">🦊</span>
+                <div class="team-score-info">
+                    <div class="team-score-name">Fox</div>
+                    <div class="team-score-pts">0 pts</div>
+                </div>
+            </div>
+            <div class="team-score-card" id="score-card-2">
+                <span class="team-score-icon">🦅</span>
+                <div class="team-score-info">
+                    <div class="team-score-name">Eagle</div>
+                    <div class="team-score-pts">0 pts</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
