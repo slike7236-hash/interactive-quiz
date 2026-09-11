@@ -1,137 +1,74 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interaktiv Jamoaviy Activity O'yini</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interaktiv Jamoaviy O'yin</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- YOUTUBE VIDEO ORQA FON BLOKI -->
-    <div class="video-background">
-        <iframe 
-            src="https://www.youtube.com/embed/w48f5KjGQqg?autoplay=1&mute=1&loop=1&playlist=w48f5KjGQqg&controls=0&showinfo=0&rel=0&enablejsapi=1" 
-            title="YouTube video player" 
-            frameborder="0" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen>
-        </iframe>
+  <div class="container">
+    
+    <!-- 1. Jamoalarni Sozlash Ekrani -->
+    <div id="setup-screen" class="card">
+      <h1>🎮 Jamoaviy Activity O'yini</h1>
+      <p class="subtitle">Jamoalarni sozlang va o'yinni boshlang</p>
+
+      <div class="teams-setup-grid">
+        <div class="team-setup-card">
+          <h3>1-Jamoa</h3>
+          <input type="text" class="team-name-input" value="1-Jamoa">
+          <p class="label">Ikonka tanlang:</p>
+          <div class="icon-selector"></div>
+        </div>
+
+        <div class="team-setup-card">
+          <h3>2-Jamoa</h3>
+          <input type="text" class="team-name-input" value="2-Jamoa">
+          <p class="label">Ikonka tanlang:</p>
+          <div class="icon-selector"></div>
+        </div>
+
+        <div class="team-setup-card">
+          <h3>3-Jamoa</h3>
+          <input type="text" class="team-name-input" value="3-Jamoa">
+          <p class="label">Ikonka tanlang:</p>
+          <div class="icon-selector"></div>
+        </div>
+      </div>
+
+      <button id="start-game-btn" class="main-btn">O'yinni Boshlash 🚀</button>
     </div>
 
-    <!-- O'YINNING ASOSIY KONTEYNERI -->
-    <div id="app">
-        <!-- 1. JAMOALARNI SOZLASH SAHIFASI -->
-        <div id="setup-screen" class="screen active">
-            <header class="main-header">
-                <h1>Jamoaviy Activity O'yini</h1>
-                <p>Jamoalarni sozlang va o'yinni boshlang</p>
-            </header>
+    <!-- 2. Asosiy O'yin Maydoni -->
+    <div id="game-screen" class="hidden">
+      <!-- Hisoblar Doskasi -->
+      <div id="scoreboard" class="scoreboard"></div>
 
-            <div class="teams-setup-container">
-                <div class="team-card-setup" data-team="0">
-                    <h3>1-Jamoa</h3>
-                    <input type="text" class="team-name-input" value="Leon" placeholder="Jamoa nomi...">
-                    <div class="icon-selector-title">Ikonka tanlang:</div>
-                    <div class="icon-grid" id="icons-team-0"></div>
-                </div>
-
-                <div class="team-card-setup" data-team="1">
-                    <h3>2-Jamoa</h3>
-                    <input type="text" class="team-name-input" value="Fox" placeholder="Jamoa nomi...">
-                    <div class="icon-selector-title">Ikonka tanlang:</div>
-                    <div class="icon-grid" id="icons-team-1"></div>
-                </div>
-
-                <div class="team-card-setup" data-team="2">
-                    <h3>3-Jamoa</h3>
-                    <input type="text" class="team-name-input" value="Eagle" placeholder="Jamoa nomi...">
-                    <div class="icon-selector-title">Ikonka tanlang:</div>
-                    <div class="icon-grid" id="icons-team-2"></div>
-                </div>
-            </div>
-
-            <button id="start-game-btn" class="btn primary-btn">O'yinni Boshlash 🚀</button>
-        </div>
-
-        <!-- 2. SAVOL KARTOCHKALARI SAHIFASI (21 TA KARTA) -->
-        <div id="board-screen" class="screen">
-            <header class="game-header">
-                <h2>SAVOL TANLANG</h2>
-                <div class="turn-indicator">Hozirgi navbat: <span id="current-turn-name">Leon</span></div>
-            </header>
-
-            <div class="cards-grid" id="cards-grid">
-                <!-- 21 ta karta dinamik ravishda chiqariladi -->
-            </div>
-        </div>
-
-        <!-- 3. SAVOL VA YORDAM (HELP) SAHIFASI -->
-        <div id="question-screen" class="screen">
-            <div class="question-container">
-                <div class="question-main-box">
-                    <div class="points-badge" id="question-points">10 pts</div>
-                    <div class="question-content" id="question-text">Savol yuklanmoqda...</div>
-
-                    <!-- Dynamic Help Content (Variants / Letter Boxes / 20/80) -->
-                    <div id="help-display-area">
-                        <div id="variants-box" class="hidden"></div>
-                        <div id="letters-box" class="hidden"></div>
-                        <div id="team-split-box" class="hidden"></div>
-                    </div>
-
-                    <div class="answer-input-container">
-                        <input type="text" id="type-answer-input" placeholder="Javobni kiriting (Type answer)">
-                    </div>
-                </div>
-
-                <div class="help-sidebar">
-                    <div class="sidebar-title">HELP (YORDAM)</div>
-                    <button class="help-btn" id="btn-help-variant">
-                        Variant <span class="help-desc">(25% ball)</span>
-                    </button>
-                    <button class="help-btn" id="btn-help-letter">
-                        Letter <span class="help-desc">(-20% / -40% / -60%)</span>
-                    </button>
-                    <button class="help-btn" id="btn-help-2080">
-                        20/80 <span class="help-desc">(Bo'lishish)</span>
-                    </button>
-                    <button class="check-btn" id="btn-check-answer">
-                        Check (Tekshirish)
-                    </button>
-                    <button class="back-btn" id="btn-back-to-board">
-                        ← Ortga
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- DOIMIY PASTKI SCOREBOARD (ALL SCREENS) -->
-        <div id="persistent-scoreboard" class="hidden">
-            <div class="team-score-card" id="score-card-0">
-                <span class="team-score-icon">🦁</span>
-                <div class="team-score-info">
-                    <div class="team-score-name">Leon</div>
-                    <div class="team-score-pts">0 pts</div>
-                </div>
-            </div>
-            <div class="team-score-card" id="score-card-1">
-                <span class="team-score-icon">🦊</span>
-                <div class="team-score-info">
-                    <div class="team-score-name">Fox</div>
-                    <div class="team-score-pts">0 pts</div>
-                </div>
-            </div>
-            <div class="team-score-card" id="score-card-2">
-                <span class="team-score-icon">🦅</span>
-                <div class="team-score-info">
-                    <div class="team-score-name">Eagle</div>
-                    <div class="team-score-pts">0 pts</div>
-                </div>
-            </div>
-        </div>
+      <!-- Savollar Setkasi (Jeopardy Stili) -->
+      <div id="quiz-board" class="quiz-board"></div>
     </div>
 
-    <script src="app.js"></script>
+    <!-- 3. Savol Modali (Oyna) -->
+    <div id="question-modal" class="modal hidden">
+      <div class="modal-content">
+        <span id="close-modal" class="close-btn">&times;</span>
+        <div id="modal-category" class="modal-category">Mavzu</div>
+        <div id="modal-question" class="modal-question">Savol matni shu yerda chiqadi</div>
+        
+        <button id="show-answer-btn" class="sub-btn">Javobni Ko'rsatish</button>
+        <div id="modal-answer" class="modal-answer hidden">Javob matni</div>
+
+        <div class="award-buttons">
+          <p>Ballni qaysi jamoaga beramiz?</p>
+          <div id="team-award-list" class="team-award-list"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
