@@ -33,7 +33,7 @@ let currentPoints = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
   setupIconSelectors();
-  init3DAquarium(); // 3D Akvariumni ishga tushirish
+  initAquarium(); // Nom to'g'rilandi (init3DAquarium emas)
 
   document.getElementById('start-game-btn').addEventListener('click', startGame);
   document.getElementById('show-answer-btn').addEventListener('click', () => {
@@ -46,11 +46,12 @@ function setupIconSelectors() {
   document.querySelectorAll('.icon-selector').forEach(selector => {
     icons.forEach((icon, i) => {
       const span = document.createElement('span');
-      span.className = `icon-option ${i === 0 ? 'active' : ''}`;
+      // "active" klassi o'rniga CSS ga mos holda ham active beramiz
+      span.className = `icon-option ${i === 0 ? 'active selected' : ''}`;
       span.textContent = icon;
       span.addEventListener('click', () => {
-        selector.querySelectorAll('.icon-option').forEach(el => el.classList.remove('active'));
-        span.classList.add('active');
+        selector.querySelectorAll('.icon-option').forEach(el => el.classList.remove('active', 'selected'));
+        span.classList.add('active', 'selected');
       });
       selector.appendChild(span);
     });
@@ -60,8 +61,13 @@ function setupIconSelectors() {
 function startGame() {
   teams = [];
   document.querySelectorAll('.team-setup-card').forEach((card, index) => {
-    const name = card.querySelector('.team-name-input').value || `${index + 1}-Jamoa`;
-    const icon = card.querySelector('.icon-option.active').textContent;
+    const nameInput = card.querySelector('.team-name-input');
+    const name = nameInput ? nameInput.value || `${index + 1}-Jamoa` : `${index + 1}-Jamoa`;
+    
+    // Xavfsiz tanlov: agar active topilmasa standart ikonka beriladi
+    const activeIconEl = card.querySelector('.icon-option.active') || card.querySelector('.icon-option');
+    const icon = activeIconEl ? activeIconEl.textContent : '🚀';
+
     teams.push({ id: index, name, icon, score: 0 });
   });
 
@@ -77,11 +83,11 @@ function renderScoreboard() {
   board.innerHTML = '';
   teams.forEach(team => {
     const card = document.createElement('div');
-    card.className = 'score-card';
+    card.className = 'team-score-card';
     card.innerHTML = `
-      <div class="team-icon">${team.icon}</div>
-      <strong>${team.name}</strong>
-      <div class="team-score">${team.score} pt</div>
+      <div class="team-icon" style="font-size: 1.5rem;">${team.icon}</div>
+      <h4>${team.name}</h4>
+      <div class="score">${team.score} pt</div>
     `;
     board.appendChild(card);
   });
@@ -94,15 +100,22 @@ function renderQuizBoard() {
   quizData.forEach(cat => {
     const col = document.createElement('div');
     col.className = 'category-column';
+    col.style.display = 'flex';
+    col.style.flexDirection = 'column';
+    col.style.gap = '10px';
     
     const header = document.createElement('div');
     header.className = 'category-header';
+    header.style.textAlign = 'center';
+    header.style.fontWeight = 'bold';
+    header.style.color = '#38bdf8';
+    header.style.padding = '10px';
     header.textContent = cat.category;
     col.appendChild(header);
 
     cat.questions.forEach(q => {
       const tile = document.createElement('div');
-      tile.className = 'question-tile';
+      tile.className = 'quiz-card';
       tile.textContent = `${q.points} pt`;
       tile.addEventListener('click', () => openQuestion(tile, cat.category, q));
       col.appendChild(tile);
@@ -113,7 +126,7 @@ function renderQuizBoard() {
 }
 
 function openQuestion(tile, category, qData) {
-  if (tile.classList.contains('used')) return;
+  if (tile.classList.contains('disabled')) return;
   activeTile = tile;
   currentPoints = qData.points;
 
@@ -138,7 +151,7 @@ function openQuestion(tile, category, qData) {
 function awardPoints(teamId) {
   teams[teamId].score += currentPoints;
   if (activeTile) {
-    activeTile.classList.add('used');
+    activeTile.classList.add('disabled');
     activeTile.textContent = '✓';
   }
   closeModal();
@@ -148,7 +161,6 @@ function awardPoints(teamId) {
 function closeModal() {
   document.getElementById('question-modal').classList.add('hidden');
 }
-
 
 // Akvarium va Jonli Baliqlar Dvigateli
 function initAquarium() {
@@ -163,7 +175,6 @@ function initAquarium() {
   window.addEventListener('resize', resize);
   resize();
 
-  // Har xil turdagi baliqlar va pufakchalar
   const fishIcons = ['🐠', '🐟', '🐡', '🦈', '🐙'];
   const fishes = Array.from({ length: 15 }, () => ({
     x: Math.random() * canvas.width,
@@ -182,7 +193,6 @@ function initAquarium() {
   }));
 
   function draw() {
-    // Suv osti gradienti (Moviy fon)
     const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
     gradient.addColorStop(0, '#0284c7');
     gradient.addColorStop(0.5, '#0369a1');
@@ -190,7 +200,6 @@ function initAquarium() {
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Suv pufakchalarini chizish
     ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
     bubbles.forEach(b => {
       ctx.beginPath();
@@ -203,7 +212,6 @@ function initAquarium() {
       }
     });
 
-    // Baliqlarni chizish
     fishes.forEach(f => {
       ctx.font = `${f.size}px Arial`;
       ctx.save();
@@ -222,6 +230,3 @@ function initAquarium() {
 
   draw();
 }
-
-// Ishga tushirish
-initAquarium();
