@@ -150,118 +150,78 @@ function closeModal() {
 }
 
 
-// --- 2. THREE.JS 3D AKVARIUM DVIGATELI ---
-function init3DAquarium() {
+// Akvarium va Jonli Baliqlar Dvigateli
+function initAquarium() {
   const canvas = document.getElementById('bg-canvas');
-  if (!canvas || !window.THREE) return;
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
 
-  const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x0284c7, 0.015);
-
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.z = 30;
-
-  const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(window.devicePixelRatio);
-
-  // Yorug'lik
-  const ambientLight = new THREE.AmbientLight(0x0284c7, 1.5);
-  scene.add(ambientLight);
-
-  const dirLight = new THREE.DirectionalLight(0xffffff, 2);
-  dirLight.position.set(0, 50, 10);
-  scene.add(dirLight);
-
-  // 3D Baliqlar Yaratish (Geometrik Baliq Modeli)
-  function createFish() {
-    const fishGroup = new THREE.Group();
-
-    // Tana (Cone)
-    const bodyGeo = new THREE.ConeGeometry(1, 3, 8);
-    bodyGeo.rotateZ(-Math.PI / 2);
-    const bodyMat = new THREE.MeshPhongMaterial({ color: Math.random() > 0.5 ? 0xff7700 : 0x00ffcc, flatShading: true });
-    const body = new THREE.Mesh(bodyGeo, bodyMat);
-    fishGroup.add(body);
-
-    // Dumi (Tail)
-    const tailGeo = new THREE.ConeGeometry(0.8, 1.5, 3);
-    tailGeo.rotateZ(Math.PI / 2);
-    const tailMat = new THREE.MeshPhongMaterial({ color: 0xff3366 });
-    const tail = new THREE.Mesh(tailGeo, tailMat);
-    tail.position.x = -1.8;
-    fishGroup.add(tail);
-
-    return fishGroup;
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
   }
+  window.addEventListener('resize', resize);
+  resize();
 
-  const fishes = [];
-  for (let i = 0; i < 15; i++) {
-    const fish = createFish();
-    fish.position.set(
-      (Math.random() - 0.5) * 60,
-      (Math.random() - 0.5) * 40,
-      (Math.random() - 0.5) * 30
-    );
-    const speed = Math.random() * 0.1 + 0.05;
-    const scale = Math.random() * 0.8 + 0.6;
-    fish.scale.set(scale, scale, scale);
+  // Har xil turdagi baliqlar va pufakchalar
+  const fishIcons = ['🐠', '🐟', '🐡', '🦈', '🐙'];
+  const fishes = Array.from({ length: 15 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    size: Math.random() * 25 + 30,
+    speed: Math.random() * 1.5 + 0.8,
+    dir: Math.random() < 0.5 ? 1 : -1,
+    icon: fishIcons[Math.floor(Math.random() * fishIcons.length)]
+  }));
 
-    scene.add(fish);
-    fishes.push({ mesh: fish, speed: speed, direction: 1 });
-  }
+  const bubbles = Array.from({ length: 40 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 4 + 2,
+    speed: Math.random() * 1 + 0.5
+  }));
 
-  // 3D Pufakchalar (Sphere)
-  const bubbleGeo = new THREE.SphereGeometry(0.3, 8, 8);
-  const bubbleMat = new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.6 });
-  const bubbles = [];
+  function draw() {
+    // Suv osti gradienti (Moviy fon)
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop(0, '#0284c7');
+    gradient.addColorStop(0.5, '#0369a1');
+    gradient.addColorStop(1, '#0f172a');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  for (let i = 0; i < 50; i++) {
-    const bubble = new THREE.Mesh(bubbleGeo, bubbleMat);
-    bubble.position.set(
-      (Math.random() - 0.5) * 80,
-      (Math.random() - 0.5) * 50,
-      (Math.random() - 0.5) * 40
-    );
-    scene.add(bubble);
-    bubbles.push({ mesh: bubble, speed: Math.random() * 0.08 + 0.02 });
-  }
-
-  // Animatsiya sikli
-  function animate() {
-    requestAnimationFrame(animate);
-
-    // Baliqlar suzishi
-    fishes.forEach(f => {
-      f.mesh.position.x += f.speed * f.direction;
-      f.mesh.rotation.z = Math.sin(Date.now() * 0.005) * 0.1;
-
-      if (f.mesh.position.x > 35) {
-        f.direction = -1;
-        f.mesh.rotation.y = Math.PI;
-      } else if (f.mesh.position.x < -35) {
-        f.direction = 1;
-        f.mesh.rotation.y = 0;
-      }
-    });
-
-    // Pufakchalar ko'tarilishi
+    // Suv pufakchalarini chizish
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
     bubbles.forEach(b => {
-      b.mesh.position.y += b.speed;
-      if (b.mesh.position.y > 25) {
-        b.mesh.position.y = -25;
-        b.mesh.position.x = (Math.random() - 0.5) * 80;
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+      ctx.fill();
+      b.y -= b.speed;
+      if (b.y < 0) {
+        b.y = canvas.height;
+        b.x = Math.random() * canvas.width;
       }
     });
 
-    renderer.render(scene, camera);
+    // Baliqlarni chizish
+    fishes.forEach(f => {
+      ctx.font = `${f.size}px Arial`;
+      ctx.save();
+      ctx.translate(f.x, f.y);
+      if (f.dir === -1) ctx.scale(-1, 1);
+      ctx.fillText(f.icon, 0, 0);
+      ctx.restore();
+
+      f.x += f.speed * f.dir;
+      if (f.x > canvas.width + 50) f.dir = -1;
+      if (f.x < -50) f.dir = 1;
+    });
+
+    requestAnimationFrame(draw);
   }
 
-  animate();
-
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
+  draw();
 }
+
+// Ishga tushirish
+initAquarium();
