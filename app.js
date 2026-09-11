@@ -1,4 +1,4 @@
-// Darslarda ishlatish uchun savollar bazasi (o'zingiz o'zgartirishingiz mumkin)
+// --- 1. O'YIN SAVOLLARI VA MANTIQI ---
 const quizData = [
   {
     category: "Vocabulary",
@@ -20,7 +20,7 @@ const quizData = [
     category: "General Knowledge",
     questions: [
       { points: 100, question: "Buyuk Britaniyaning poytaxti qaysi shahar?", answer: "London" },
-      { points: 200, question: "Aglis tilida nechta harf bor?", answer: "26 ta" },
+      { points: 200, question: "Ingliz tilida nechta harf bor?", answer: "26 ta" },
       { points: 300, question: "Dunyodagi eng kotirovkali til qaysi?", answer: "Ingliz tili" }
     ]
   }
@@ -33,6 +33,8 @@ let currentPoints = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
   setupIconSelectors();
+  init3DAquarium(); // 3D Akvariumni ishga tushirish
+
   document.getElementById('start-game-btn').addEventListener('click', startGame);
   document.getElementById('show-answer-btn').addEventListener('click', () => {
     document.getElementById('modal-answer').classList.remove('hidden');
@@ -120,7 +122,6 @@ function openQuestion(tile, category, qData) {
   document.getElementById('modal-answer').textContent = `Javob: ${qData.answer}`;
   document.getElementById('modal-answer').classList.add('hidden');
 
-  // Jamoalarga ball berish tugmalarini chiqarish
   const awardList = document.getElementById('team-award-list');
   awardList.innerHTML = '';
   teams.forEach(team => {
@@ -147,77 +148,120 @@ function awardPoints(teamId) {
 function closeModal() {
   document.getElementById('question-modal').classList.add('hidden');
 }
-// Akvarium (Jonli fon) Dvigateli
-const canvas = document.getElementById('aquarium-canvas');
-if (canvas) {
-  const ctx = canvas.getContext('2d');
 
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+
+// --- 2. THREE.JS 3D AKVARIUM DVIGATELI ---
+function init3DAquarium() {
+  const canvas = document.getElementById('bg-canvas');
+  if (!canvas || !window.THREE) return;
+
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x0284c7, 0.015);
+
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.z = 30;
+
+  const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
+
+  // Yorug'lik
+  const ambientLight = new THREE.AmbientLight(0x0284c7, 1.5);
+  scene.add(ambientLight);
+
+  const dirLight = new THREE.DirectionalLight(0xffffff, 2);
+  dirLight.position.set(0, 50, 10);
+  scene.add(dirLight);
+
+  // 3D Baliqlar Yaratish (Geometrik Baliq Modeli)
+  function createFish() {
+    const fishGroup = new THREE.Group();
+
+    // Tana (Cone)
+    const bodyGeo = new THREE.ConeGeometry(1, 3, 8);
+    bodyGeo.rotateZ(-Math.PI / 2);
+    const bodyMat = new THREE.MeshPhongMaterial({ color: Math.random() > 0.5 ? 0xff7700 : 0x00ffcc, flatShading: true });
+    const body = new THREE.Mesh(bodyGeo, bodyMat);
+    fishGroup.add(body);
+
+    // Dumi (Tail)
+    const tailGeo = new THREE.ConeGeometry(0.8, 1.5, 3);
+    tailGeo.rotateZ(Math.PI / 2);
+    const tailMat = new THREE.MeshPhongMaterial({ color: 0xff3366 });
+    const tail = new THREE.Mesh(tailGeo, tailMat);
+    tail.position.x = -1.8;
+    fishGroup.add(tail);
+
+    return fishGroup;
   }
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
 
-  // Baliqlar va pufakchalar obyekti
   const fishes = [];
+  for (let i = 0; i < 15; i++) {
+    const fish = createFish();
+    fish.position.set(
+      (Math.random() - 0.5) * 60,
+      (Math.random() - 0.5) * 40,
+      (Math.random() - 0.5) * 30
+    );
+    const speed = Math.random() * 0.1 + 0.05;
+    const scale = Math.random() * 0.8 + 0.6;
+    fish.scale.set(scale, scale, scale);
+
+    scene.add(fish);
+    fishes.push({ mesh: fish, speed: speed, direction: 1 });
+  }
+
+  // 3D Pufakchalar (Sphere)
+  const bubbleGeo = new THREE.SphereGeometry(0.3, 8, 8);
+  const bubbleMat = new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.6 });
   const bubbles = [];
-  const fishIcons = ['🐠', '🐟', '🐡', '🦈', '🐙'];
 
-  for (let i = 0; i < 12; i++) {
-    fishes.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      size: Math.random() * 20 + 25,
-      speed: Math.random() * 1.5 + 0.5,
-      direction: Math.random() < 0.5 ? 1 : -1,
-      icon: fishIcons[Math.floor(Math.random() * fishIcons.length)]
-    });
+  for (let i = 0; i < 50; i++) {
+    const bubble = new THREE.Mesh(bubbleGeo, bubbleMat);
+    bubble.position.set(
+      (Math.random() - 0.5) * 80,
+      (Math.random() - 0.5) * 50,
+      (Math.random() - 0.5) * 40
+    );
+    scene.add(bubble);
+    bubbles.push({ mesh: bubble, speed: Math.random() * 0.08 + 0.02 });
   }
 
-  for (let i = 0; i < 30; i++) {
-    bubbles.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      radius: Math.random() * 4 + 1,
-      speed: Math.random() * 1 + 0.5
-    });
-  }
+  // Animatsiya sikli
+  function animate() {
+    requestAnimationFrame(animate);
 
-  function animateAquarium() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Pufakchalarni chizish
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-    bubbles.forEach(b => {
-      ctx.beginPath();
-      ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
-      ctx.fill();
-      b.y -= b.speed;
-      if (b.y < 0) {
-        b.y = canvas.height;
-        b.x = Math.random() * canvas.width;
-      }
-    });
-
-    // Baliqlarni chizish
+    // Baliqlar suzishi
     fishes.forEach(f => {
-      ctx.font = `${f.size}px serif`;
-      ctx.save();
-      ctx.translate(f.x, f.y);
-      if (f.direction === -1) {
-        ctx.scale(-1, 1);
-      }
-      ctx.fillText(f.icon, 0, 0);
-      ctx.restore();
+      f.mesh.position.x += f.speed * f.direction;
+      f.mesh.rotation.z = Math.sin(Date.now() * 0.005) * 0.1;
 
-      f.x += f.speed * f.direction;
-      if (f.x > canvas.width + 50) f.direction = -1;
-      if (f.x < -50) f.direction = 1;
+      if (f.mesh.position.x > 35) {
+        f.direction = -1;
+        f.mesh.rotation.y = Math.PI;
+      } else if (f.mesh.position.x < -35) {
+        f.direction = 1;
+        f.mesh.rotation.y = 0;
+      }
     });
 
-    requestAnimationFrame(animateAquarium);
+    // Pufakchalar ko'tarilishi
+    bubbles.forEach(b => {
+      b.mesh.position.y += b.speed;
+      if (b.mesh.position.y > 25) {
+        b.mesh.position.y = -25;
+        b.mesh.position.x = (Math.random() - 0.5) * 80;
+      }
+    });
+
+    renderer.render(scene, camera);
   }
 
-  animateAquarium();
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
 }
