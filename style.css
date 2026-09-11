@@ -1,3 +1,23 @@
+/* Akvarium Kanvasi (butun ekranni egallaydi) */
+#aquarium-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background: linear-gradient(180deg, #0284c7 0%, #0369a1 40%, #0f172a 100%);
+}
+
+/* Asosiy bloklar shaffofroq bo'lib, orqa fon ko'rinib turishi uchun */
+body {
+  background-color: transparent !important;
+}
+
+.card, .team-setup-card, .question-tile, .score-card, .question-card {
+  background: rgba(30, 41, 59, 0.85) !important;
+  backdrop-filter: blur(8px);
+}
 * {
   box-sizing: border-box;
   margin: 0;
