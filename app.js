@@ -1,87 +1,149 @@
-const availableIcons = ['🚀', '🦁', '⚡', '🔥', '👑', '🎯'];
-const sampleQuestions = [
-  "1-savol: O'zbekistonning poytaxti qaysi shahar?",
-  "2-savol: Dunyodagi eng katta okean qaysi?",
-  "3-savol: Ingliz tilida 'Apple' so'zining ma'nosi nima?",
-  "4-savol: Quyosh tizimidagi eng katta planeta qaysi?",
-  "5-savol: 12 * 12 nechiga teng?"
+// Darslarda ishlatish uchun savollar bazasi (o'zingiz o'zgartirishingiz mumkin)
+const quizData = [
+  {
+    category: "Vocabulary",
+    questions: [
+      { points: 100, question: "'Environment' so'zining tarjimasi nima?", answer: "Atrof-muhit" },
+      { points: 200, question: "'Improve' fe'lining ma'nosi nima?", answer: "Rivojlantirmoq / Yaxshilamoq" },
+      { points: 300, question: "'Ancient' so'ziga antonim toping.", answer: "Modern / New" }
+    ]
+  },
+  {
+    category: "Grammar",
+    questions: [
+      { points: 100, question: "'She ___ (go) to school everyday' bo'shliqni to'ldiring.", answer: "goes" },
+      { points: 200, question: "'Go' fe'lining 2-shakli (Past Simple) qaysi?", answer: "went" },
+      { points: 300, question: "Present Perfect zamonining formulasi qanday?", answer: "Subject + have/has + V3" }
+    ]
+  },
+  {
+    category: "General Knowledge",
+    questions: [
+      { points: 100, question: "Buyuk Britaniyaning poytaxti qaysi shahar?", answer: "London" },
+      { points: 200, question: "Aglis tilida nechta harf bor?", answer: "26 ta" },
+      { points: 300, question: "Dunyodagi eng kotirovkali til qaysi?", answer: "Ingliz tili" }
+    ]
+  }
 ];
 
+const icons = ['🚀', '🦁', '⚡', '🔥', '👑', '🎯'];
 let teams = [];
-let currentTeamIndex = 0;
-let currentQuestionIndex = 0;
+let activeTile = null;
+let currentPoints = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
-  const selectors = document.querySelectorAll('.icon-selector');
+  setupIconSelectors();
+  document.getElementById('start-game-btn').addEventListener('click', startGame);
+  document.getElementById('show-answer-btn').addEventListener('click', () => {
+    document.getElementById('modal-answer').classList.remove('hidden');
+  });
+  document.getElementById('close-modal').addEventListener('click', closeModal);
+});
 
-  selectors.forEach((selector) => {
-    availableIcons.forEach((icon, index) => {
-      const iconSpan = document.createElement('span');
-      iconSpan.classList.add('icon-item');
-      if (index === 0) iconSpan.classList.add('active');
-      iconSpan.textContent = icon;
-
-      iconSpan.addEventListener('click', () => {
-        selector.querySelectorAll('.icon-item').forEach(el => el.classList.remove('active'));
-        iconSpan.classList.add('active');
+function setupIconSelectors() {
+  document.querySelectorAll('.icon-selector').forEach(selector => {
+    icons.forEach((icon, i) => {
+      const span = document.createElement('span');
+      span.className = `icon-option ${i === 0 ? 'active' : ''}`;
+      span.textContent = icon;
+      span.addEventListener('click', () => {
+        selector.querySelectorAll('.icon-option').forEach(el => el.classList.remove('active'));
+        span.classList.add('active');
       });
-
-      selector.appendChild(iconSpan);
+      selector.appendChild(span);
     });
   });
-
-  document.getElementById('start-btn').addEventListener('click', startGame);
-  document.getElementById('correct-btn').addEventListener('click', () => handleAnswer(true));
-  document.getElementById('wrong-btn').addEventListener('click', () => handleAnswer(false));
-});
+}
 
 function startGame() {
   teams = [];
-  const cards = document.querySelectorAll('.team-card');
-
-  cards.forEach((card, i) => {
-    const nameInput = card.querySelector('.team-name');
-    const activeIcon = card.querySelector('.icon-item.active');
-
-    teams.push({
-      name: nameInput.value || `${i + 1}-Jamoa`,
-      icon: activeIcon ? activeIcon.textContent : '🚀',
-      score: 0
-    });
+  document.querySelectorAll('.team-setup-card').forEach((card, index) => {
+    const name = card.querySelector('.team-name-input').value || `${index + 1}-Jamoa`;
+    const icon = card.querySelector('.icon-option.active').textContent;
+    teams.push({ id: index, name, icon, score: 0 });
   });
 
   document.getElementById('setup-screen').classList.add('hidden');
   document.getElementById('game-screen').classList.remove('hidden');
 
-  updateGameView();
+  renderScoreboard();
+  renderQuizBoard();
 }
 
-function updateGameView() {
-  const scoreboard = document.getElementById('scoreboard');
-  scoreboard.innerHTML = '';
-
-  teams.forEach((team, index) => {
+function renderScoreboard() {
+  const board = document.getElementById('scoreboard');
+  board.innerHTML = '';
+  teams.forEach(team => {
     const card = document.createElement('div');
-    card.className = `score-card ${index === currentTeamIndex ? 'active-turn' : ''}`;
+    card.className = 'score-card';
     card.innerHTML = `
-      <div style="font-size: 1.5rem;">${team.icon}</div>
+      <div class="team-icon">${team.icon}</div>
       <strong>${team.name}</strong>
-      <div style="font-size: 1.2rem; color: #10b981;">${team.score} ball</div>
+      <div class="team-score">${team.score} pt</div>
     `;
-    scoreboard.appendChild(card);
+    board.appendChild(card);
+  });
+}
+
+function renderQuizBoard() {
+  const board = document.getElementById('quiz-board');
+  board.innerHTML = '';
+
+  quizData.forEach(cat => {
+    const col = document.createElement('div');
+    col.className = 'category-column';
+    
+    const header = document.createElement('div');
+    header.className = 'category-header';
+    header.textContent = cat.category;
+    col.appendChild(header);
+
+    cat.questions.forEach(q => {
+      const tile = document.createElement('div');
+      tile.className = 'question-tile';
+      tile.textContent = `${q.points} pt`;
+      tile.addEventListener('click', () => openQuestion(tile, cat.category, q));
+      col.appendChild(tile);
+    });
+
+    board.appendChild(col);
+  });
+}
+
+function openQuestion(tile, category, qData) {
+  if (tile.classList.contains('used')) return;
+  activeTile = tile;
+  currentPoints = qData.points;
+
+  document.getElementById('modal-category').textContent = category;
+  document.getElementById('modal-question').textContent = qData.question;
+  document.getElementById('modal-answer').textContent = `Javob: ${qData.answer}`;
+  document.getElementById('modal-answer').classList.add('hidden');
+
+  // Jamoalarga ball berish tugmalarini chiqarish
+  const awardList = document.getElementById('team-award-list');
+  awardList.innerHTML = '';
+  teams.forEach(team => {
+    const btn = document.createElement('button');
+    btn.className = 'award-btn';
+    btn.textContent = `${team.icon} ${team.name}`;
+    btn.addEventListener('click', () => awardPoints(team.id));
+    awardList.appendChild(btn);
   });
 
-  document.getElementById('current-turn').textContent = `Navbat: ${teams[currentTeamIndex].icon} ${teams[currentTeamIndex].name}`;
-  document.getElementById('question-text').textContent = sampleQuestions[currentQuestionIndex % sampleQuestions.length];
+  document.getElementById('question-modal').classList.remove('hidden');
 }
 
-function handleAnswer(isCorrect) {
-  if (isCorrect) {
-    teams[currentTeamIndex].score += 10;
+function awardPoints(teamId) {
+  teams[teamId].score += currentPoints;
+  if (activeTile) {
+    activeTile.classList.add('used');
+    activeTile.textContent = '✓';
   }
+  closeModal();
+  renderScoreboard();
+}
 
-  currentTeamIndex = (currentTeamIndex + 1) % teams.length;
-  currentQuestionIndex++;
-
-  updateGameView();
+function closeModal() {
+  document.getElementById('question-modal').classList.add('hidden');
 }
