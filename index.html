@@ -9,36 +9,56 @@
 <body>
 
   <div class="container">
-    <h1>Jamoaviy Activity O'yini</h1>
-    <p class="subtitle">Jamoalarni sozlang va o'yinni boshlang</p>
+    <!-- 1-BOSQICH: Jamoalarni sozlash ekrani -->
+    <div id="setup-screen">
+      <h1>Jamoaviy Activity O'yini</h1>
+      <p class="subtitle">Jamoalarni sozlang va o'yinni boshlang</p>
 
-    <div class="teams-grid">
-      <!-- 1-Jamoa -->
-      <div class="team-card">
-        <h3>1-Jamoa</h3>
-        <input type="text" class="team-name" value="tom" placeholder="Jamoa nomi">
-        <p class="label">Ikonka tanlang:</p>
-        <div class="icon-selector"></div>
+      <div class="teams-grid">
+        <div class="team-card">
+          <h3>1-Jamoa</h3>
+          <input type="text" class="team-name" value="1-Jamoa" placeholder="Jamoa nomi">
+          <p class="label">Ikonka tanlang:</p>
+          <div class="icon-selector"></div>
+        </div>
+
+        <div class="team-card">
+          <h3>2-Jamoa</h3>
+          <input type="text" class="team-name" value="2-Jamoa" placeholder="Jamoa nomi">
+          <p class="label">Ikonka tanlang:</p>
+          <div class="icon-selector"></div>
+        </div>
+
+        <div class="team-card">
+          <h3>3-Jamoa</h3>
+          <input type="text" class="team-name" value="3-Jamoa" placeholder="Jamoa nomi">
+          <p class="label">Ikonka tanlang:</p>
+          <div class="icon-selector"></div>
+        </div>
       </div>
 
-      <!-- 2-Jamoa -->
-      <div class="team-card">
-        <h3>2-Jamoa</h3>
-        <input type="text" class="team-name" value="jim" placeholder="Jamoa nomi">
-        <p class="label">Ikonka tanlang:</p>
-        <div class="icon-selector"></div>
-      </div>
-
-      <!-- 3-Jamoa -->
-      <div class="team-card">
-        <h3>3-Jamoa</h3>
-        <input type="text" class="team-name" value="ron" placeholder="Jamoa nomi">
-        <p class="label">Ikonka tanlang:</p>
-        <div class="icon-selector"></div>
-      </div>
+      <button id="start-btn">O'yinni Boshlash 🚀</button>
     </div>
 
-    <button id="start-btn">O'yinni Boshlash 🚀</button>
+    <!-- 2-BOSQICH: O'yin maydoni -->
+    <div id="game-screen" class="hidden">
+      <h1>O'yin Maydoni</h1>
+      
+      <!-- Jamoalar Ochkolari -->
+      <div id="scoreboard" class="scoreboard"></div>
+
+      <!-- Savol paneli -->
+      <div class="question-card">
+        <h2 id="current-turn">Navbat: -</h2>
+        <div id="question-box" class="question-box">
+          <p id="question-text">Savol yuklanmoqda...</p>
+        </div>
+        <div class="action-buttons">
+          <button id="correct-btn" class="btn-success">+10 Ball (To'g'ri)</button>
+          <button id="wrong-btn" class="btn-danger">O'tkazib yuborish</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="app.js"></script>
