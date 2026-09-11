@@ -33,20 +33,32 @@ let currentPoints = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
   setupIconSelectors();
-  initAquarium(); // Nom to'g'rilandi (init3DAquarium emas)
 
-  document.getElementById('start-game-btn').addEventListener('click', startGame);
-  document.getElementById('show-answer-btn').addEventListener('click', () => {
-    document.getElementById('modal-answer').classList.remove('hidden');
-  });
-  document.getElementById('close-modal').addEventListener('click', closeModal);
+  // O'yinni boshlash tugmasi
+  const startBtn = document.getElementById('start-game-btn');
+  if (startBtn) {
+    startBtn.addEventListener('click', startGame);
+  }
+
+  // Javobni ko'rsatish
+  const showAnsBtn = document.getElementById('show-answer-btn');
+  if (showAnsBtn) {
+    showAnsBtn.addEventListener('click', () => {
+      document.getElementById('modal-answer').classList.remove('hidden');
+    });
+  }
+
+  // Modalni yopish
+  const closeBtn = document.getElementById('close-modal');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeModal);
+  }
 });
 
 function setupIconSelectors() {
   document.querySelectorAll('.icon-selector').forEach(selector => {
     icons.forEach((icon, i) => {
       const span = document.createElement('span');
-      // "active" klassi o'rniga CSS ga mos holda ham active beramiz
       span.className = `icon-option ${i === 0 ? 'active selected' : ''}`;
       span.textContent = icon;
       span.addEventListener('click', () => {
@@ -64,7 +76,6 @@ function startGame() {
     const nameInput = card.querySelector('.team-name-input');
     const name = nameInput ? nameInput.value || `${index + 1}-Jamoa` : `${index + 1}-Jamoa`;
     
-    // Xavfsiz tanlov: agar active topilmasa standart ikonka beriladi
     const activeIconEl = card.querySelector('.icon-option.active') || card.querySelector('.icon-option');
     const icon = activeIconEl ? activeIconEl.textContent : '🚀';
 
@@ -80,6 +91,7 @@ function startGame() {
 
 function renderScoreboard() {
   const board = document.getElementById('scoreboard');
+  if (!board) return;
   board.innerHTML = '';
   teams.forEach(team => {
     const card = document.createElement('div');
@@ -95,6 +107,7 @@ function renderScoreboard() {
 
 function renderQuizBoard() {
   const board = document.getElementById('quiz-board');
+  if (!board) return;
   board.innerHTML = '';
 
   quizData.forEach(cat => {
@@ -160,73 +173,4 @@ function awardPoints(teamId) {
 
 function closeModal() {
   document.getElementById('question-modal').classList.add('hidden');
-}
-
-// Akvarium va Jonli Baliqlar Dvigateli
-function initAquarium() {
-  const canvas = document.getElementById('bg-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resize);
-  resize();
-
-  const fishIcons = ['🐠', '🐟', '🐡', '🦈', '🐙'];
-  const fishes = Array.from({ length: 15 }, () => ({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    size: Math.random() * 25 + 30,
-    speed: Math.random() * 1.5 + 0.8,
-    dir: Math.random() < 0.5 ? 1 : -1,
-    icon: fishIcons[Math.floor(Math.random() * fishIcons.length)]
-  }));
-
-  const bubbles = Array.from({ length: 40 }, () => ({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    r: Math.random() * 4 + 2,
-    speed: Math.random() * 1 + 0.5
-  }));
-
-  function draw() {
-    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    gradient.addColorStop(0, '#0284c7');
-    gradient.addColorStop(0.5, '#0369a1');
-    gradient.addColorStop(1, '#0f172a');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-    bubbles.forEach(b => {
-      ctx.beginPath();
-      ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
-      ctx.fill();
-      b.y -= b.speed;
-      if (b.y < 0) {
-        b.y = canvas.height;
-        b.x = Math.random() * canvas.width;
-      }
-    });
-
-    fishes.forEach(f => {
-      ctx.font = `${f.size}px Arial`;
-      ctx.save();
-      ctx.translate(f.x, f.y);
-      if (f.dir === -1) ctx.scale(-1, 1);
-      ctx.fillText(f.icon, 0, 0);
-      ctx.restore();
-
-      f.x += f.speed * f.dir;
-      if (f.x > canvas.width + 50) f.dir = -1;
-      if (f.x < -50) f.dir = 1;
-    });
-
-    requestAnimationFrame(draw);
-  }
-
-  draw();
 }
