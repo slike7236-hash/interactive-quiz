@@ -1,58 +1,19 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body, html {
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-    position: relative;
-}
-
-/* VIDEO BACKGROUND SOZLAMALARI */
-.video-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1; /* Eng orqaga o'tkaziladi */
-    pointer-events: none; /* Video bosilmasligi uchun */
-    overflow: hidden;
-    background-color: #000;
-}
-
-.video-background iframe {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100vw;
-    height: 56.25vw; /* 16:9 nisbat */
-    min-height: 100vh;
-    min-width: 177.77vh;
-    transform: translate(-50%, -50%);
-}
-
-/* O'YIN KONTEYNERI VIDEO USTIDA KO'RINISHI UCHUN */
-#app {
-    position: relative;
-    z-index: 1; /* Videoning ustiga chiqaradi */
-    min-height: 100vh;
-}
-* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
 body, html {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
+  position: relative;
+  color: #ffffff;
 }
 
+/* 1. YOUTUBE VIDEO ORQA FON (PLEYER TUGMALARISIZ VA TO'LIQ EKRAN) */
 .video-background {
   position: fixed;
   top: 0;
@@ -60,7 +21,7 @@ body, html {
   width: 100vw;
   height: 100vh;
   z-index: -1;
-  pointer-events: none;
+  pointer-events: none; /* Video ustida bosishni taqiqlaydi */
   overflow: hidden;
   background-color: #000;
 }
@@ -74,13 +35,144 @@ body, html {
   min-height: 100vh;
   min-width: 177.77vh;
   transform: translate(-50%, -50%);
+  border: none;
 }
 
-.content {
+/* 2. O'YIN KONTEYNERI SOZLAMALARI */
+#app {
   position: relative;
   z-index: 1;
-  color: white;
+  min-height: 100vh;
+  background: rgba(0, 0, 0, 0.4); /* Matnlar yaxshi ko'rinishi uchun biroz qorong'ulash */
+  padding: 20px;
+}
+
+/* SAHIFALARNI YASHIRISH VA KO'RSATISH Mantig'i */
+.screen {
+  display: none; /* Odatiy holatda barcha sahifalar yashirin bo'ladi */
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.screen.active {
+  display: block; /* Faqat .active klassi bor sahifa ko'rinadi */
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* 3. DESIGN STYLES (Sizning dizayningiz) */
+.main-header, .game-header {
   text-align: center;
-  padding-top: 20%;
-  font-family: sans-serif;
+  margin-bottom: 25px;
+}
+
+.main-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+}
+
+.teams-setup-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.team-card-setup {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 20px;
+  width: 250px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.team-name-input, #type-answer-input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+}
+
+.btn, .help-btn, .check-btn, .back-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+.primary-btn {
+  background: #28a745;
+  color: white;
+  display: block;
+  margin: 0 auto;
+}
+
+.primary-btn:hover {
+  background: #218838;
+}
+
+/* QUESTION & HELP CONTAINER */
+.question-container {
+  display: flex;
+  gap: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.question-main-box {
+  flex: 3;
+}
+
+.help-sidebar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.help-btn {
+  background: #17a2b8;
+  color: white;
+}
+
+.check-btn {
+  background: #ffc107;
+  color: #000;
+}
+
+.back-btn {
+  background: #dc3545;
+  color: white;
+}
+
+/* SCOREBOARD */
+#persistent-scoreboard {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 10px 20px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.team-score-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
