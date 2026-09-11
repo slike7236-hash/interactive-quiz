@@ -3,62 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jamoaviy Activity O'yini</title>
+  <title>Interaktiv Jamoaviy O'yin</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <div class="container">
-    <!-- 1-BOSQICH: Jamoalarni sozlash ekrani -->
-    <div id="setup-screen">
-      <h1>Jamoaviy Activity O'yini</h1>
+    
+    <!-- 1. Jamoalarni Sozlash Ekrani -->
+    <div id="setup-screen" class="card">
+      <h1>🎮 Jamoaviy Activity O'yini</h1>
       <p class="subtitle">Jamoalarni sozlang va o'yinni boshlang</p>
 
-      <div class="teams-grid">
-        <div class="team-card">
+      <div class="teams-setup-grid">
+        <div class="team-setup-card">
           <h3>1-Jamoa</h3>
-          <input type="text" class="team-name" value="1-Jamoa" placeholder="Jamoa nomi">
+          <input type="text" class="team-name-input" value="1-Jamoa">
           <p class="label">Ikonka tanlang:</p>
           <div class="icon-selector"></div>
         </div>
 
-        <div class="team-card">
+        <div class="team-setup-card">
           <h3>2-Jamoa</h3>
-          <input type="text" class="team-name" value="2-Jamoa" placeholder="Jamoa nomi">
+          <input type="text" class="team-name-input" value="2-Jamoa">
           <p class="label">Ikonka tanlang:</p>
           <div class="icon-selector"></div>
         </div>
 
-        <div class="team-card">
+        <div class="team-setup-card">
           <h3>3-Jamoa</h3>
-          <input type="text" class="team-name" value="3-Jamoa" placeholder="Jamoa nomi">
+          <input type="text" class="team-name-input" value="3-Jamoa">
           <p class="label">Ikonka tanlang:</p>
           <div class="icon-selector"></div>
         </div>
       </div>
 
-      <button id="start-btn">O'yinni Boshlash 🚀</button>
+      <button id="start-game-btn" class="main-btn">O'yinni Boshlash 🚀</button>
     </div>
 
-    <!-- 2-BOSQICH: O'yin maydoni -->
+    <!-- 2. Asosiy O'yin Maydoni -->
     <div id="game-screen" class="hidden">
-      <h1>O'yin Maydoni</h1>
-      
-      <!-- Jamoalar Ochkolari -->
+      <!-- Hisoblar Doskasi -->
       <div id="scoreboard" class="scoreboard"></div>
 
-      <!-- Savol paneli -->
-      <div class="question-card">
-        <h2 id="current-turn">Navbat: -</h2>
-        <div id="question-box" class="question-box">
-          <p id="question-text">Savol yuklanmoqda...</p>
-        </div>
-        <div class="action-buttons">
-          <button id="correct-btn" class="btn-success">+10 Ball (To'g'ri)</button>
-          <button id="wrong-btn" class="btn-danger">O'tkazib yuborish</button>
+      <!-- Savollar Setkasi (Jeopardy Stili) -->
+      <div id="quiz-board" class="quiz-board"></div>
+    </div>
+
+    <!-- 3. Savol Modali (Oyna) -->
+    <div id="question-modal" class="modal hidden">
+      <div class="modal-content">
+        <span id="close-modal" class="close-btn">&times;</span>
+        <div id="modal-category" class="modal-category">Mavzu</div>
+        <div id="modal-question" class="modal-question">Savol matni shu yerda chiqadi</div>
+        
+        <button id="show-answer-btn" class="sub-btn">Javobni Ko'rsatish</button>
+        <div id="modal-answer" class="modal-answer hidden">Javob matni</div>
+
+        <div class="award-buttons">
+          <p>Ballni qaysi jamoaga beramiz?</p>
+          <div id="team-award-list" class="team-award-list"></div>
         </div>
       </div>
     </div>
+
   </div>
 
   <script src="app.js"></script>
