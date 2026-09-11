@@ -21,6 +21,10 @@ body {
   width: 100%;
 }
 
+.hidden {
+  display: none !important;
+}
+
 h1 {
   font-size: 2.2rem;
   color: #00bfff;
@@ -64,10 +68,6 @@ h1 {
   margin-bottom: 15px;
 }
 
-.team-name:focus {
-  border-color: #00bfff;
-}
-
 .label {
   font-size: 0.85rem;
   color: #8a99ad;
@@ -87,12 +87,7 @@ h1 {
   cursor: pointer;
   background-color: #0d1527;
   border: 2px solid transparent;
-  transition: all 0.2s ease;
-  user-select: none;
-}
-
-.icon-item:hover {
-  background-color: #233352;
+  transition: all 0.2s;
 }
 
 .icon-item.active {
@@ -110,9 +105,67 @@ h1 {
   font-size: 1.2rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.2s ease;
 }
 
-#start-btn:hover {
-  background-color: #059669;
+/* O'yin ekrani stllari */
+.scoreboard {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.score-card {
+  background: #172238;
+  padding: 15px 25px;
+  border-radius: 10px;
+  border: 2px solid #233352;
+  min-width: 140px;
+}
+
+.score-card.active-turn {
+  border-color: #00bfff;
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.4);
+}
+
+.question-card {
+  background: #172238;
+  border-radius: 12px;
+  padding: 30px;
+  margin-top: 20px;
+}
+
+.question-box {
+  background: #0d1527;
+  padding: 25px;
+  border-radius: 8px;
+  margin: 20px 0;
+  font-size: 1.3rem;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.btn-success {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btn-danger {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
 }
