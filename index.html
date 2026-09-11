@@ -5,12 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Interaktiv Jamoaviy O'yin</title>
   <link rel="stylesheet" href="style.css">
+  <!-- Three.js 3D kutubxonasi -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
-<!-- Akvarium uchun orqa fon kanvasi -->
-  <canvas id="aquarium-canvas"></canvas>
+
+  <!-- 3D Akvarium Fon Canvas -->
+  <canvas id="bg-canvas"></canvas>
+
   <div class="container">
-    
     <!-- 1. Jamoalarni Sozlash Ekrani -->
     <div id="setup-screen" class="card">
       <h1>🎮 Jamoaviy Activity O'yini</h1>
@@ -44,19 +47,16 @@
 
     <!-- 2. Asosiy O'yin Maydoni -->
     <div id="game-screen" class="hidden">
-      <!-- Hisoblar Doskasi -->
       <div id="scoreboard" class="scoreboard"></div>
-
-      <!-- Savollar Setkasi (Jeopardy Stili) -->
       <div id="quiz-board" class="quiz-board"></div>
     </div>
 
-    <!-- 3. Savol Modali (Oyna) -->
+    <!-- 3. Savol Modali -->
     <div id="question-modal" class="modal hidden">
       <div class="modal-content">
         <span id="close-modal" class="close-btn">&times;</span>
         <div id="modal-category" class="modal-category">Mavzu</div>
-        <div id="modal-question" class="modal-question">Savol matni shu yerda chiqadi</div>
+        <div id="modal-question" class="modal-question">Savol matni</div>
         
         <button id="show-answer-btn" class="sub-btn">Javobni Ko'rsatish</button>
         <div id="modal-answer" class="modal-answer hidden">Javob matni</div>
