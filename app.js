@@ -147,3 +147,77 @@ function awardPoints(teamId) {
 function closeModal() {
   document.getElementById('question-modal').classList.add('hidden');
 }
+// Akvarium (Jonli fon) Dvigateli
+const canvas = document.getElementById('aquarium-canvas');
+if (canvas) {
+  const ctx = canvas.getContext('2d');
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  // Baliqlar va pufakchalar obyekti
+  const fishes = [];
+  const bubbles = [];
+  const fishIcons = ['🐠', '🐟', '🐡', '🦈', '🐙'];
+
+  for (let i = 0; i < 12; i++) {
+    fishes.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 20 + 25,
+      speed: Math.random() * 1.5 + 0.5,
+      direction: Math.random() < 0.5 ? 1 : -1,
+      icon: fishIcons[Math.floor(Math.random() * fishIcons.length)]
+    });
+  }
+
+  for (let i = 0; i < 30; i++) {
+    bubbles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 4 + 1,
+      speed: Math.random() * 1 + 0.5
+    });
+  }
+
+  function animateAquarium() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Pufakchalarni chizish
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+    bubbles.forEach(b => {
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+      ctx.fill();
+      b.y -= b.speed;
+      if (b.y < 0) {
+        b.y = canvas.height;
+        b.x = Math.random() * canvas.width;
+      }
+    });
+
+    // Baliqlarni chizish
+    fishes.forEach(f => {
+      ctx.font = `${f.size}px serif`;
+      ctx.save();
+      ctx.translate(f.x, f.y);
+      if (f.direction === -1) {
+        ctx.scale(-1, 1);
+      }
+      ctx.fillText(f.icon, 0, 0);
+      ctx.restore();
+
+      f.x += f.speed * f.direction;
+      if (f.x > canvas.width + 50) f.direction = -1;
+      if (f.x < -50) f.direction = 1;
+    });
+
+    requestAnimationFrame(animateAquarium);
+  }
+
+  animateAquarium();
+}
