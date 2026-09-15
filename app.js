@@ -5,7 +5,7 @@ const quizData = [
     questions: [
       { points: 100, question: "'Monsoon' so'zining o'zbekcha tarjimasi nima?", answer: "Musson / Musson yomg'irlari" },
       { points: 100, question: "'Lightning' so'zining ma'nosi nima?", answer: "Yashin / Chaqmoq" },
-      { points: 200, question: "Sizda BONUS!", answer: "+200 ball" },
+      { points: 100, question: "Sizda BONUS!", answer: "+100 ball" },
       { points: 100, question: "'Drought' so'zining o'zbekcha tarjimasi nima?", answer: "Qurg'oqchilik" },
       { points: 100, question: "'Thunder' so'zining ma'nosi nima?", answer: "Momaqaldiroq / Guldurash" },
       { points: 100, question: "'Shadow' so'zining ma'nosi nima?", answer: "Soya" },
@@ -23,7 +23,7 @@ const quizData = [
       { points: 200, question: "'Yomg'ir' so'zining inglizcha tarjimasi nima?", answer: "Rain" },
       { points: 200, question: "'Quruq' so'zining inglizcha tarjimasi nima?", answer: "Dry" },
       { points: 200, question: "'O'zgarmoq / O'zgartirmoq' fe'lining inglizchasi nima?", answer: "Change" },
-      { points: 300, question: "Sizda BONUS!", answer: "+300 ball" },
+      { points: 200, question: "Sizda BONUS!", answer: "+200 ball" },
       { points: 200, question: "'Qolmoq' (masalan: mehmonxonada) fe'lining inglizcha tarjimasi nima?", answer: "Stay" },
       { points: 200, question: "'Yoz' faslining inglizcha tarjimasi nima?", answer: "Summer" }
     ]
@@ -31,13 +31,13 @@ const quizData = [
   {
     category: "Definitions",
     questions: [
-      { points: 400, question: "Sizda BONUS!", answer: "+400 ball" },
+      { points: 300, question: "What word means to continue or remaining, or the final one?", answer: "Last" },
       { points: 300, question: "What is the blue space above the Earth where you see clouds and the sun?", answer: "Sky" },
       { points: 300, question: "What season comes after winter, when flowers start to grow?", answer: "Spring" },
       { points: 300, question: "What is the season when it is very cold and often snows?", answer: "Winter" },
       { points: 300, question: "What do you call bad weather with strong winds, heavy rain, and thunder?", answer: "Storm" },
       { points: 300, question: "What is a large, dry area of land with very little water and few plants?", answer: "Desert" },
-      { points: 300, question: "What word means to continue or remaining, or the final one?", answer: "Last" },
+      { points: 300, question: "Sizda BONUS!", answer: "+400 ball" },
       { points: 300, question: "What word means having a very low temperature or not warm?", answer: "Cold" },
       { points: 300, question: "What word describes weather with a lot of bright light from the sun?", answer: "Sunny" }
     ]
