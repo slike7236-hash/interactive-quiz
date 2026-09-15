@@ -3,25 +3,43 @@ const quizData = [
   {
     category: "Vocabulary",
     questions: [
-      { points: 100, question: "'Environment' so'zining tarjimasi nima?", answer: "Atrof-muhit" },
-      { points: 200, question: "'Improve' fe'lining ma'nosi nima?", answer: "Rivojlantirmoq / Yaxshilamoq" },
-      { points: 300, question: "'Ancient' so'ziga antonim toping.", answer: "Modern / New" }
+      { points: 100, question: "'Monsoon' so'zining o'zbekcha tarjimasi nima?", answer: "Musson / Musson yomg'irlari" },
+      { points: 100, question: "'Lightning' so'zining ma'nosi nima?", answer: "Yashin / Chaqmoq" },
+      { points: 200, question: "Sizda BONUS!", answer: "+200 ball" },
+      { points: 100, question: "'Drought' so'zining o'zbekcha tarjimasi nima?", answer: "Qurg'oqchilik" },
+      { points: 100, question: "'Thunder' so'zining ma'nosi nima?", answer: "Momaqaldiroq / Guldurash" },
+      { points: 100, question: "'Shadow' so'zining ma'nosi nima?", answer: "Soya" },
+      { points: 100, question: "'Pen pal' so'zining tarjimasi nima?", answer: "Xat-xabar orqali yozishib turadigan do'st" },
+      { points: 100, question: "'Vacation' so'zining o'zbekcha tarjimasi nima?", answer: "Ta'til" },
+      { points: 100, question: "'Flood' so'zining ma'nosi nima?", answer: "Toshqin / Suv bosishi" }
     ]
   },
   {
-    category: "Grammar",
+    category: "Translation",
     questions: [
-      { points: 100, question: "'She ___ (go) to school everyday' bo'shliqni to'ldiring.", answer: "goes" },
-      { points: 200, question: "'Go' fe'lining 2-shakli (Past Simple) qaysi?", answer: "went" },
-      { points: 300, question: "Present Perfect zamonining formulasi qanday?", answer: "Subject + have/has + V3" }
+      { points: 200, question: "'Qorli' so'zining inglizcha tarjimasi nima?", answer: "Snowy" },
+      { points: 200, question: "'Mintaqaga yoki yerga yetib kelmoq' fe'lining inglizchasi nima?", answer: "Arrive" },
+      { points: 200, question: "'Kuz' (yil fasli) ingliz tilida nima deyiladi?", answer: "Fall" },
+      { points: 200, question: "'Yomg'ir' so'zining inglizcha tarjimasi nima?", answer: "Rain" },
+      { points: 200, question: "'Quruq' so'zining inglizcha tarjimasi nima?", answer: "Dry" },
+      { points: 200, question: "'O'zgarmoq / O'zgartirmoq' fe'lining inglizchasi nima?", answer: "Change" },
+      { points: 300, question: "Sizda BONUS!", answer: "+300 ball" },
+      { points: 200, question: "'Qolmoq' (masalan: mehmonxonada) fe'lining inglizcha tarjimasi nima?", answer: "Stay" },
+      { points: 200, question: "'Yoz' faslining inglizcha tarjimasi nima?", answer: "Summer" }
     ]
   },
   {
-    category: "General Knowledge",
+    category: "Definitions",
     questions: [
-      { points: 100, question: "Buyuk Britaniyaning poytaxti qaysi shahar?", answer: "London" },
-      { points: 200, question: "Ingliz tilida nechta harf bor?", answer: "26 ta" },
-      { points: 300, question: "Dunyodagi eng kotirovkali til qaysi?", answer: "Ingliz tili" }
+      { points: 400, question: "Sizda BONUS!", answer: "+400 ball" },
+      { points: 300, question: "What is the blue space above the Earth where you see clouds and the sun?", answer: "Sky" },
+      { points: 300, question: "What season comes after winter, when flowers start to grow?", answer: "Spring" },
+      { points: 300, question: "What is the season when it is very cold and often snows?", answer: "Winter" },
+      { points: 300, question: "What do you call bad weather with strong winds, heavy rain, and thunder?", answer: "Storm" },
+      { points: 300, question: "What is a large, dry area of land with very little water and few plants?", answer: "Desert" },
+      { points: 300, question: "What word means to continue or remaining, or the final one?", answer: "Last" },
+      { points: 300, question: "What word means having a very low temperature or not warm?", answer: "Cold" },
+      { points: 300, question: "What word describes weather with a lot of bright light from the sun?", answer: "Sunny" }
     ]
   }
 ];
